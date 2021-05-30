@@ -6,7 +6,8 @@ uint16_t ledsVirtuales;
 
 
 void setUp(void){
-
+    ledsVirtuales = 0xFFFF;
+    Leds_Create(&ledsVirtuales);
 }
 
 void tearDown(void){
@@ -14,8 +15,6 @@ void tearDown(void){
 
 // Despues de la inicializacion todos los LEDS deben quedar apagados
 void test_LedsOffAfterCreate(void){
-    ledsVirtuales = 0xFFFF;
-    Leds_Create(&ledsVirtuales);
     TEST_ASSERT_EQUAL_HEX16(0x0000, ledsVirtuales); //inyeccion de dependencias, compruebo que todos los leds esten apagados
 }
 
@@ -42,7 +41,6 @@ void test_TurnOnAndOffManyLeds(void){
 
 // Se pueden prender todos los LEDs de una vez.
 void test_TurnOnAllLeds(void){
-    Led_TurnOffAll();
     Led_TurnOnAll();
     TEST_ASSERT_EQUAL_HEX16(0xFFFF, ledsVirtuales);
 }
@@ -59,7 +57,7 @@ void test_ConsultAnOffLed(void){
     uint16_t ledsVirtualesState = 0x0000;
     Led_TurnOn(LED);
     Led_TurnOff(LED);
-    Led_ConsutlOff(LED,&ledsVirtualesState);
+    Led_Consult(LED,&ledsVirtualesState);
     TEST_ASSERT_EQUAL_HEX16(0x0000, ledsVirtualesState);
 }
 
@@ -67,17 +65,16 @@ void test_ConsultAnOffLed(void){
 void test_ConsultALed(void){
     uint16_t ledsVirtualesState = 0x0000;
     Led_TurnOn(LED);
-    Led_ConsutlLed(LED,&ledsVirtualesState);
+    Led_Consult(LED,&ledsVirtualesState);
     TEST_ASSERT_EQUAL_HEX16(1 <<(LED - 1), ledsVirtualesState);
 }
 
 // Revisar limites de los parametros.
 void test_LimitParameters(void){
     uint16_t ledsVirtualesState = 0x0000;
-    Led_TurnOffAll();
     Led_TurnOn(18);
     TEST_ASSERT_EQUAL_HEX16(0x0000, ledsVirtuales);
     Led_TurnOn(3);
-    Led_ConsutlLed(0,&ledsVirtualesState);
+    Led_Consult(0,&ledsVirtualesState);
     TEST_ASSERT_EQUAL_HEX16(0x0000, ledsVirtualesState);    
 }

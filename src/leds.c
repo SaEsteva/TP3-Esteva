@@ -13,7 +13,7 @@ uint16_t led_to_bit(uint8_t led){
 
 void Leds_Create(uint16_t * puntero){
     puerto = puntero;
-    *puerto = ALL_LEDS_ON;
+    Led_TurnOffAll();
 }
 
 void Led_TurnOn(uint8_t led){
@@ -32,10 +32,6 @@ void Led_TurnOnAll(void){
     *puerto = ALL_LEDS_OFF;
 }
 
-void Led_ConsutlOff(uint8_t led,uint16_t * puntero){
-    *puntero &= led_to_bit(led);
-}
-
-void Led_ConsutlLed(uint8_t led,uint16_t * puntero){
+void Led_Consult(uint8_t led,uint16_t * puntero){
     *puntero = (* puerto) & led_to_bit(led);
 }
