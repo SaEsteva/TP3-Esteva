@@ -2,6 +2,8 @@
 #include "leds.h"
 
 #define LED 5
+#define LED_ON 1
+#define LED_OFF 1
 uint16_t ledsVirtuales;
 
 
@@ -54,27 +56,27 @@ void test_TurnOffAllLeds(void){
 
 // Se puede consultar el estado de un LED apagado.
 void test_ConsultAnOffLed(void){
-    uint16_t ledsVirtualesState = 0x0000;
+    _Bool statusLed;
     Led_TurnOn(LED);
     Led_TurnOff(LED);
-    Led_Consult(LED,&ledsVirtualesState);
-    TEST_ASSERT_EQUAL_HEX16(0x0000, ledsVirtualesState);
+    statusLed = Led_Consult(LED);
+    TEST_ASSERT_FALSE(statusLed);
 }
 
 // Se puede consultar el estado de un LED 
 void test_ConsultALed(void){
-    uint16_t ledsVirtualesState = 0x0000;
+    _Bool statusLed;
     Led_TurnOn(LED);
-    Led_Consult(LED,&ledsVirtualesState);
-    TEST_ASSERT_EQUAL_HEX16(1 <<(LED - 1), ledsVirtualesState);
+    statusLed = Led_Consult(LED);
+    TEST_ASSERT_TRUE(statusLed);
 }
 
 // Revisar limites de los parametros.
 void test_LimitParameters(void){
-    uint16_t ledsVirtualesState = 0x0000;
+    _Bool statusLed;
     Led_TurnOn(18);
     TEST_ASSERT_EQUAL_HEX16(0x0000, ledsVirtuales);
     Led_TurnOn(3);
-    Led_Consult(0,&ledsVirtualesState);
-    TEST_ASSERT_EQUAL_HEX16(0x0000, ledsVirtualesState);    
+    statusLed = Led_Consult(0);
+    TEST_ASSERT_FALSE(statusLed);   
 }

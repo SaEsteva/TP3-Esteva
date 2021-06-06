@@ -5,6 +5,7 @@ static uint16_t * puerto;
 #define ALL_LEDS_ON 0x0000
 #define ALL_LEDS_OFF 0xFFFF
 #define LED_ON      1
+#define LED_OFF     0
 #define LED_OFSET   1
 
 uint16_t led_to_bit(uint8_t led){
@@ -32,6 +33,6 @@ void Led_TurnOnAll(void){
     *puerto = ALL_LEDS_OFF;
 }
 
-void Led_Consult(uint8_t led,uint16_t * puntero){
-    *puntero = (* puerto) & led_to_bit(led);
+_Bool Led_Consult(uint8_t led){
+    return ( (*puerto & led_to_bit(led)) != LED_OFF);
 }
